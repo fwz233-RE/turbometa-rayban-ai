@@ -117,7 +117,7 @@ struct SettingsView: View {
                     } label: {
                         HStack {
                             Image(systemName: "key.fill")
-                                .foregroundColor(AppColors.wordLearn)
+                                .foregroundColor(AppColors.voiceChat)
                             Text("API Key 管理")
                                 .foregroundColor(AppColors.textPrimary)
                             Spacer()

@@ -19,10 +19,8 @@
 "home.liveai.subtitle" = "Real-time Chat";
 "home.translate.title" = "Live Translate";
 "home.translate.subtitle" = "Instant Translation";
-"home.leaneat.title" = "LeanEat";
-"home.leaneat.subtitle" = "Calorie Recognition";
-"home.wordlearn.title" = "WordLearn";
-"home.wordlearn.subtitle" = "Vocabulary Learning";
+"home.voicechat.title" = "Voice Chat";
+"home.voicechat.subtitle" = "Real-time Voice";
 "home.livestream.title" = "Live Stream";
 "home.livestream.subtitle" = "Douyin · Kuaishou · Xiaohongshu";
 "home.comingsoon" = "Coming Soon";
@@ -51,33 +49,6 @@
 // MARK: - Photo Preview
 "photo.share" = "Share";
 "photo.ai" = "AI Recognition";
-"photo.nutrition" = "Nutrition Analysis";
-
-// MARK: - LeanEat (Nutrition Analysis)
-"leaneat.title" = "Nutrition Analysis";
-"leaneat.analyzing" = "Analyzing...";
-"leaneat.healthscore" = "Health Score";
-"leaneat.totalnutrition" = "Total Nutrition";
-"leaneat.calories" = "Calories";
-"leaneat.protein" = "Protein";
-"leaneat.fat" = "Fat";
-"leaneat.carbs" = "Carbs";
-"leaneat.fiber" = "Fiber";
-"leaneat.sugar" = "Sugar";
-"leaneat.foods" = "Food Details";
-"leaneat.suggestions" = "Nutrition Advice";
-"leaneat.portion" = "Portion";
-"leaneat.rating.excellent" = "Excellent";
-"leaneat.rating.good" = "Good";
-"leaneat.rating.fair" = "Fair";
-"leaneat.rating.poor" = "Poor";
-"leaneat.healthscore.excellent" = "Very Healthy";
-"leaneat.healthscore.good" = "Quite Healthy";
-"leaneat.healthscore.fair" = "Not Bad";
-"leaneat.healthscore.poor" = "Needs Improvement";
-"leaneat.error.title" = "Analysis Failed";
-"leaneat.retry" = "Retry";
-
 // MARK: - Vision Recognition
 "vision.title" = "AI Image Recognition";
 "vision.analyzing" = "AI Analyzing...";

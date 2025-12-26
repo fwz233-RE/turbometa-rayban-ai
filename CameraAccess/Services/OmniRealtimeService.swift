@@ -74,11 +74,17 @@ class OmniRealtimeService: NSObject {
     var onError: ((String) -> Void)?
     var onConnected: (() -> Void)?
     var onFirstAudioSent: (() -> Void)?
+    var onDisconnected: ((String) -> Void)?  // 断开连接回调，参数是原因
 
     // State
     private var isRecording = false
     private var hasAudioBeenSent = false
     private var eventIdCounter = 0
+    private var isDisconnecting = false  // 标识是否正在断开连接
+    
+    // 音频重采样
+    private var audioConverter: AVAudioConverter?
+    private let targetFormat = AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: 24000, channels: 1, interleaved: false)
 
     init(apiKey: String) {
         self.apiKey = apiKey
@@ -142,6 +148,10 @@ class OmniRealtimeService: NSObject {
     // MARK: - WebSocket Connection
 
     func connect() {
+        // 重置断开标志
+        isDisconnecting = false
+        hasAudioBeenSent = false
+        
         let urlString = "\(baseURL)?model=\(model)"
         print("🔌 [Omni] 准备连接 WebSocket: \(urlString)")
 
@@ -171,11 +181,16 @@ class OmniRealtimeService: NSObject {
     }
 
     func disconnect() {
+        guard !isDisconnecting else {
+            print("🔌 [Omni] 已在断开中，跳过重复调用")
+            return
+        }
+        isDisconnecting = true
         print("🔌 [Omni] 断开 WebSocket 连接")
-        webSocket?.cancel(with: .goingAway, reason: nil)
-        webSocket = nil
         stopRecording()
         stopPlaybackEngine()
+        webSocket?.cancel(with: .goingAway, reason: nil)
+        webSocket = nil
     }
 
     // MARK: - Session Configuration
@@ -190,11 +205,15 @@ class OmniRealtimeService: NSObject {
                 "input_audio_format": "pcm16",
                 "output_audio_format": "pcm24",
                 "smooth_output": true,
-                "instructions": "你是RayBan Meta智能眼镜AI助手。\n\n【重要】必须始终用中文回答，无论用户说什么语言。\n\n回答要简练、口语化，像朋友聊天一样。用户戴着眼镜可以看到周围环境，根据画面快速给出有用的建议。不要啰嗦，直接说重点。",
+                "instructions": "你是一个智能语音助手。\n\n【重要】必须始终用中文回答。\n\n回答要简练、口语化，像朋友聊天一样。不要啰嗦，直接说重点。",
+                "input_audio_transcription": [
+                    "model": "gummy-realtime-v1"
+                ],
                 "turn_detection": [
                     "type": "server_vad",
-                    "threshold": 0.5,
-                    "silence_duration_ms": 800
+                    "threshold": 0.3,
+                    "silence_duration_ms": 600,
+                    "prefix_padding_ms": 300
                 ]
             ]
         ]
@@ -262,31 +281,96 @@ class OmniRealtimeService: NSObject {
     }
 
     private func processAudioBuffer(_ buffer: AVAudioPCMBuffer) {
-        // Convert Float32 audio to PCM16 format
+        let sourceSampleRate = buffer.format.sampleRate
+        let targetSampleRate: Double = 24000
+        
+        // 获取音频数据
         guard let floatChannelData = buffer.floatChannelData else {
             return
         }
-
+        
         let frameLength = Int(buffer.frameLength)
         let channel = floatChannelData.pointee
-
-        // Convert Float32 (-1.0 to 1.0) to Int16 (-32768 to 32767)
-        var int16Data = [Int16](repeating: 0, count: frameLength)
-        for i in 0..<frameLength {
-            let sample = channel[i]
-            let clampedSample = max(-1.0, min(1.0, sample))
-            int16Data[i] = Int16(clampedSample * 32767.0)
+        
+        // 如果采样率不同，使用 AVAudioConverter 进行高质量重采样
+        if sourceSampleRate != targetSampleRate, let targetFormat = targetFormat {
+            // 创建或重用转换器
+            if audioConverter == nil || audioConverter?.inputFormat != buffer.format {
+                audioConverter = AVAudioConverter(from: buffer.format, to: targetFormat)
+            }
+            
+            guard let converter = audioConverter else {
+                print("❌ [Omni] 无法创建音频转换器")
+                return
+            }
+            
+            // 计算目标帧数
+            let ratio = targetSampleRate / sourceSampleRate
+            let targetFrameLength = AVAudioFrameCount(ceil(Double(frameLength) * ratio))
+            
+            // 创建输出 buffer
+            guard let outputBuffer = AVAudioPCMBuffer(pcmFormat: targetFormat, frameCapacity: targetFrameLength) else {
+                return
+            }
+            
+            // 转换
+            var error: NSError?
+            var inputBufferOffset: AVAudioFrameCount = 0
+            
+            let inputBlock: AVAudioConverterInputBlock = { inNumPackets, outStatus in
+                if inputBufferOffset >= buffer.frameLength {
+                    outStatus.pointee = .noDataNow
+                    return nil
+                }
+                outStatus.pointee = .haveData
+                inputBufferOffset = buffer.frameLength
+                return buffer
+            }
+            
+            converter.convert(to: outputBuffer, error: &error, withInputFrom: inputBlock)
+            
+            if let error = error {
+                print("❌ [Omni] 音频转换失败: \(error)")
+                return
+            }
+            
+            // 将转换后的 Float32 数据转为 Int16
+            guard let convertedData = outputBuffer.floatChannelData else {
+                return
+            }
+            
+            let convertedLength = Int(outputBuffer.frameLength)
+            let convertedChannel = convertedData.pointee
+            
+            var int16Data = [Int16](repeating: 0, count: convertedLength)
+            for i in 0..<convertedLength {
+                let sample = convertedChannel[i]
+                let clampedSample = max(-1.0, min(1.0, sample))
+                int16Data[i] = Int16(clampedSample * 32767.0)
+            }
+            
+            let data = Data(bytes: int16Data, count: convertedLength * MemoryLayout<Int16>.size)
+            let base64Audio = data.base64EncodedString()
+            sendAudioAppend(base64Audio)
+            
+        } else {
+            // 采样率已经是 24kHz，直接转换
+            var int16Data = [Int16](repeating: 0, count: frameLength)
+            for i in 0..<frameLength {
+                let sample = channel[i]
+                let clampedSample = max(-1.0, min(1.0, sample))
+                int16Data[i] = Int16(clampedSample * 32767.0)
+            }
+            
+            let data = Data(bytes: int16Data, count: frameLength * MemoryLayout<Int16>.size)
+            let base64Audio = data.base64EncodedString()
+            sendAudioAppend(base64Audio)
         }
-
-        let data = Data(bytes: int16Data, count: frameLength * MemoryLayout<Int16>.size)
-        let base64Audio = data.base64EncodedString()
-
-        sendAudioAppend(base64Audio)
 
         // 通知第一次音频已发送
         if !hasAudioBeenSent {
             hasAudioBeenSent = true
-            print("✅ [Omni] 第一次音频已发送，启用语音触发模式")
+            print("✅ [Omni] 第一次音频已发送（\(sourceSampleRate)Hz -> \(targetSampleRate)Hz），启用语音触发模式")
             DispatchQueue.main.async { [weak self] in
                 self?.onFirstAudioSent?()
             }
@@ -349,14 +433,21 @@ class OmniRealtimeService: NSObject {
 
     private func receiveMessage() {
         webSocket?.receive { [weak self] result in
+            guard let self = self else { return }
+            
             switch result {
             case .success(let message):
-                self?.handleMessage(message)
-                self?.receiveMessage() // Continue receiving
+                self.handleMessage(message)
+                self.receiveMessage() // Continue receiving
 
             case .failure(let error):
+                // 如果正在断开连接，不报告错误
+                guard !self.isDisconnecting else {
+                    print("🔌 [Omni] 正常断开，忽略接收错误")
+                    return
+                }
                 print("❌ [Omni] 接收消息失败: \(error.localizedDescription)")
-                self?.onError?("Receive error: \(error.localizedDescription)")
+                self.onError?("连接已断开: \(error.localizedDescription)")
             }
         }
     }
@@ -379,6 +470,11 @@ class OmniRealtimeService: NSObject {
               let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
               let type = json["type"] as? String else {
             return
+        }
+
+        // 记录所有收到的事件类型（用于调试）
+        if type != "response.audio.delta" && type != "response.audio_transcript.delta" {
+            print("📩 [Omni] 收到事件: \(type)")
         }
 
         DispatchQueue.main.async {
@@ -558,5 +654,12 @@ extension OmniRealtimeService: URLSessionWebSocketDelegate {
     func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didCloseWith closeCode: URLSessionWebSocketTask.CloseCode, reason: Data?) {
         let reasonString = reason.flatMap { String(data: $0, encoding: .utf8) } ?? "unknown"
         print("🔌 [Omni] WebSocket 已断开, closeCode: \(closeCode.rawValue), reason: \(reasonString)")
+        
+        // 如果不是主动断开，则通知调用方
+        if !isDisconnecting {
+            DispatchQueue.main.async { [weak self] in
+                self?.onDisconnected?("closeCode: \(closeCode.rawValue), reason: \(reasonString)")
+            }
+        }
     }
 }

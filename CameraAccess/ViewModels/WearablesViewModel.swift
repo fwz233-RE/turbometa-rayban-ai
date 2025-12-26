@@ -43,12 +43,14 @@ class WearablesViewModel: ObservableObject {
 
     registrationTask = Task {
       for await registrationState in wearables.registrationStateStream() {
+        print("🔵 [DEBUG] Registration state changed: \(registrationState)")
         let previousState = self.registrationState
         self.registrationState = registrationState
         if self.showGettingStartedSheet == false && registrationState == .registered && previousState == .registering {
           self.showGettingStartedSheet = true
         }
         if registrationState == .registered {
+          print("🔵 [DEBUG] Device registered, setting up device stream...")
           await setupDeviceStream()
         }
       }
@@ -67,6 +69,10 @@ class WearablesViewModel: ObservableObject {
 
     deviceStreamTask = Task {
       for await devices in wearables.devicesStream() {
+        print("🔵 [DEBUG] Devices list updated: \(devices.count) device(s) found")
+        for (index, device) in devices.enumerated() {
+          print("🔵 [DEBUG]   Device \(index + 1): \(device)")
+        }
         self.devices = devices
         #if DEBUG
         self.hasMockDevice = !MockDeviceKit.shared.pairedDevices.isEmpty
@@ -91,8 +97,10 @@ class WearablesViewModel: ObservableObject {
       let deviceName = device.nameOrId()
       let token = device.addCompatibilityListener { [weak self] compatibility in
         guard let self else { return }
+        print("🟡 [DEBUG] Device '\(deviceName)' compatibility: \(compatibility)")
         if compatibility == .deviceUpdateRequired {
           Task { @MainActor in
+            print("🔴 [DEBUG] Device '\(deviceName)' requires firmware update!")
             self.showError("Device '\(deviceName)' requires an update to work with this app")
           }
         }
@@ -102,10 +110,16 @@ class WearablesViewModel: ObservableObject {
   }
 
   func connectGlasses() {
-    guard registrationState != .registering else { return }
+    print("🔵 [DEBUG] connectGlasses() called, current registrationState: \(registrationState)")
+    guard registrationState != .registering else { 
+      print("🟡 [DEBUG] Already registering, ignoring...")
+      return 
+    }
     do {
+      print("🔵 [DEBUG] Starting registration...")
       try wearables.startRegistration()
     } catch {
+      print("🔴 [DEBUG] Registration error: \(error)")
       showError(error.description)
     }
   }

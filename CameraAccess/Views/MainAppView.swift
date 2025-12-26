@@ -31,21 +31,35 @@ struct MainAppView: View {
   }
 
   var body: some View {
-    if viewModel.registrationState == .registered || viewModel.hasMockDevice {
-      // 已注册/连接设备
-      if !hasCheckedPermissions {
-        // 首次启动，请求权限
-        PermissionsRequestView { granted in
-          permissionsGranted = granted
-          hasCheckedPermissions = true
+    Group {
+      if viewModel.registrationState == .registered || viewModel.hasMockDevice {
+        // 已注册/连接设备
+        if !hasCheckedPermissions {
+          // 首次启动，请求权限
+          PermissionsRequestView { granted in
+            permissionsGranted = granted
+            hasCheckedPermissions = true
+          }
+        } else {
+          // 权限已检查，显示主界面
+          MainTabView(streamViewModel: streamViewModel, wearablesViewModel: viewModel)
         }
       } else {
-        // 权限已检查，显示主界面
-        MainTabView(streamViewModel: streamViewModel, wearablesViewModel: viewModel)
+        // 未注册 - 显示注册/引导流程
+        HomeScreenView(viewModel: viewModel)
       }
-    } else {
-      // 未注册 - 显示注册/引导流程
-      HomeScreenView(viewModel: viewModel)
     }
+    // 确保背景色填充整个屏幕
+    .background(
+      LinearGradient(
+        colors: [
+          AppColors.primary.opacity(0.1),
+          AppColors.secondary.opacity(0.1)
+        ],
+        startPoint: .topLeading,
+        endPoint: .bottomTrailing
+      )
+      .ignoresSafeArea()
+    )
   }
 }

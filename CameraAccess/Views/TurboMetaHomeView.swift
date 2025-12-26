@@ -12,7 +12,7 @@ struct TurboMetaHomeView: View {
 
     @State private var showLiveAI = false
     @State private var showLiveStream = false
-    @State private var showLeanEat = false
+    @State private var showVoiceChat = false
 
     var body: some View {
         NavigationView {
@@ -69,33 +69,22 @@ struct TurboMetaHomeView: View {
                             // Row 2
                             HStack(spacing: AppSpacing.md) {
                                 FeatureCard(
-                                    title: NSLocalizedString("home.leaneat.title", comment: "LeanEat title"),
-                                    subtitle: NSLocalizedString("home.leaneat.subtitle", comment: "LeanEat subtitle"),
-                                    icon: "chart.bar.fill",
-                                    gradient: [AppColors.leanEat, AppColors.leanEat.opacity(0.7)]
+                                    title: NSLocalizedString("home.livestream.title", comment: "Live Stream title"),
+                                    subtitle: NSLocalizedString("home.livestream.subtitle", comment: "Live Stream subtitle"),
+                                    icon: "video.fill",
+                                    gradient: [AppColors.liveStream, AppColors.liveStream.opacity(0.7)]
                                 ) {
-                                    showLeanEat = true
+                                    showLiveStream = true
                                 }
 
                                 FeatureCard(
-                                    title: NSLocalizedString("home.wordlearn.title", comment: "WordLearn title"),
-                                    subtitle: NSLocalizedString("home.wordlearn.subtitle", comment: "WordLearn subtitle"),
-                                    icon: "book.closed.fill",
-                                    gradient: [AppColors.wordLearn, AppColors.wordLearn.opacity(0.7)],
-                                    isPlaceholder: true
+                                    title: NSLocalizedString("home.voicechat.title", comment: "Voice Chat title"),
+                                    subtitle: NSLocalizedString("home.voicechat.subtitle", comment: "Voice Chat subtitle"),
+                                    icon: "waveform.circle.fill",
+                                    gradient: [AppColors.voiceChat, AppColors.voiceChat.opacity(0.7)]
                                 ) {
-                                    // Placeholder
+                                    showVoiceChat = true
                                 }
-                            }
-
-                            // Row 3 - Full width
-                            FeatureCardWide(
-                                title: NSLocalizedString("home.livestream.title", comment: "Live Stream title"),
-                                subtitle: NSLocalizedString("home.livestream.subtitle", comment: "Live Stream subtitle"),
-                                icon: "video.fill",
-                                gradient: [AppColors.liveStream, AppColors.liveStream.opacity(0.7)]
-                            ) {
-                                showLiveStream = true
                             }
                         }
                         .padding(.horizontal, AppSpacing.lg)
@@ -110,8 +99,8 @@ struct TurboMetaHomeView: View {
             .fullScreenCover(isPresented: $showLiveStream) {
                 SimpleLiveStreamView(streamViewModel: streamViewModel)
             }
-            .fullScreenCover(isPresented: $showLeanEat) {
-                StreamView(viewModel: streamViewModel, wearablesVM: wearablesViewModel)
+            .fullScreenCover(isPresented: $showVoiceChat) {
+                VoiceChatView(apiKey: apiKey)
             }
         }
     }

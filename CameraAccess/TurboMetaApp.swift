@@ -49,16 +49,22 @@ struct TurboMetaApp: App {
     WindowGroup {
       // Main app view with access to the shared Wearables SDK instance
       // The Wearables.shared singleton provides the core DAT API
-      MainAppView(wearables: Wearables.shared, viewModel: wearablesViewModel)
-        // Show error alerts for view model failures
-        .alert("Error", isPresented: $wearablesViewModel.showError) {
-          Button("OK") {
-            wearablesViewModel.dismissError()
-          }
-        } message: {
-          Text(wearablesViewModel.errorMessage)
+      ZStack {
+        MainAppView(wearables: Wearables.shared, viewModel: wearablesViewModel)
+        
+        // Registration view handles the flow for connecting to the glasses via Meta AI
+        // This is an invisible view that handles deep link callbacks
+        RegistrationView(viewModel: wearablesViewModel)
+      }
+      // Show error alerts for view model failures
+      .alert("Error", isPresented: $wearablesViewModel.showError) {
+        Button("OK") {
+          wearablesViewModel.dismissError()
         }
-        #if DEBUG
+      } message: {
+        Text(wearablesViewModel.errorMessage)
+      }
+      #if DEBUG
       // Bug 图标已隐藏
       // .sheet(isPresented: $debugMenuViewModel.showDebugMenu) {
       //   MockDeviceKitView(viewModel: debugMenuViewModel.mockDeviceKitViewModel)
@@ -66,10 +72,8 @@ struct TurboMetaApp: App {
       // .overlay {
       //   DebugMenuView(debugMenuViewModel: debugMenuViewModel)
       // }
-        #endif
-
-      // Registration view handles the flow for connecting to the glasses via Meta AI
-      RegistrationView(viewModel: wearablesViewModel)
+      #endif
     }
   }
 }
+

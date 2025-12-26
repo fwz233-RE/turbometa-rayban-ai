@@ -97,10 +97,6 @@ struct StreamView: View {
           onAIRecognition: {
             viewModel.showPhotoPreview = false
             viewModel.showVisionRecognition = true
-          },
-          onLeanEat: {
-            viewModel.showPhotoPreview = false
-            viewModel.showLeanEat = true
           }
         )
       }
@@ -109,15 +105,6 @@ struct StreamView: View {
     .sheet(isPresented: $viewModel.showVisionRecognition) {
       if let photo = viewModel.capturedPhoto {
         VisionRecognitionView(
-          photo: photo,
-          apiKey: VisionAPIConfig.apiKey
-        )
-      }
-    }
-    // Show LeanEat nutrition analysis view
-    .sheet(isPresented: $viewModel.showLeanEat) {
-      if let photo = viewModel.capturedPhoto {
-        LeanEatView(
           photo: photo,
           apiKey: VisionAPIConfig.apiKey
         )

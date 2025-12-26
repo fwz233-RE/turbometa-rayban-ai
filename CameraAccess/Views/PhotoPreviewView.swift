@@ -20,7 +20,6 @@ struct PhotoPreviewView: View {
   let photo: UIImage
   let onDismiss: () -> Void
   let onAIRecognition: (() -> Void)?
-  let onLeanEat: (() -> Void)?
 
   @State private var showShareSheet = false
   @State private var dragOffset = CGSize.zero
@@ -39,46 +38,25 @@ struct PhotoPreviewView: View {
 
         // Action Buttons
         VStack(spacing: 12) {
-          // Top row: AI Recognition and LeanEat
-          HStack(spacing: 12) {
-            // AI Recognition Button
-            if let onAIRecognition = onAIRecognition {
-              Button {
-                onAIRecognition()
-              } label: {
-                HStack {
-                  Image(systemName: "brain")
-                  Text(NSLocalizedString("photo.ai", comment: "AI Recognition"))
-                    .fontWeight(.semibold)
-                }
-                .frame(maxWidth: .infinity)
-                .padding()
-                .background(Color.blue)
-                .foregroundColor(.white)
-                .cornerRadius(12)
+          // AI Recognition Button
+          if let onAIRecognition = onAIRecognition {
+            Button {
+              onAIRecognition()
+            } label: {
+              HStack {
+                Image(systemName: "brain")
+                Text(NSLocalizedString("photo.ai", comment: "AI Recognition"))
+                  .fontWeight(.semibold)
               }
-            }
-
-            // LeanEat Button
-            if let onLeanEat = onLeanEat {
-              Button {
-                onLeanEat()
-              } label: {
-                HStack {
-                  Image(systemName: "chart.bar.fill")
-                  Text(NSLocalizedString("photo.nutrition", comment: "Nutrition Analysis"))
-                    .fontWeight(.semibold)
-                }
-                .frame(maxWidth: .infinity)
-                .padding()
-                .background(AppColors.leanEat)
-                .foregroundColor(.white)
-                .cornerRadius(12)
-              }
+              .frame(maxWidth: .infinity)
+              .padding()
+              .background(Color.blue)
+              .foregroundColor(.white)
+              .cornerRadius(12)
             }
           }
 
-          // Bottom row: Share
+          // Share Button
           Button {
             showShareSheet = true
           } label: {

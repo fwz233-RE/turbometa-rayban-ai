@@ -19,10 +19,8 @@
 "home.liveai.subtitle" = "实时对话";
 "home.translate.title" = "实时翻译";
 "home.translate.subtitle" = "即时翻译";
-"home.leaneat.title" = "LeanEat";
-"home.leaneat.subtitle" = "卡路里识别";
-"home.wordlearn.title" = "WordLearn";
-"home.wordlearn.subtitle" = "单词学习";
+"home.voicechat.title" = "语音对话";
+"home.voicechat.subtitle" = "实时语音";
 "home.livestream.title" = "直播";
 "home.livestream.subtitle" = "抖音 · 快手 · 小红书";
 "home.comingsoon" = "敬请期待";
@@ -51,33 +49,6 @@
 // MARK: - Photo Preview
 "photo.share" = "分享";
 "photo.ai" = "AI 识别";
-"photo.nutrition" = "营养分析";
-
-// MARK: - LeanEat (Nutrition Analysis)
-"leaneat.title" = "营养分析";
-"leaneat.analyzing" = "分析中...";
-"leaneat.healthscore" = "健康评分";
-"leaneat.totalnutrition" = "总营养";
-"leaneat.calories" = "热量";
-"leaneat.protein" = "蛋白质";
-"leaneat.fat" = "脂肪";
-"leaneat.carbs" = "碳水";
-"leaneat.fiber" = "膳食纤维";
-"leaneat.sugar" = "糖分";
-"leaneat.foods" = "食物详情";
-"leaneat.suggestions" = "营养建议";
-"leaneat.portion" = "份量";
-"leaneat.rating.excellent" = "优秀";
-"leaneat.rating.good" = "良好";
-"leaneat.rating.fair" = "一般";
-"leaneat.rating.poor" = "较差";
-"leaneat.healthscore.excellent" = "非常健康";
-"leaneat.healthscore.good" = "比较健康";
-"leaneat.healthscore.fair" = "还不错";
-"leaneat.healthscore.poor" = "需要改善";
-"leaneat.error.title" = "分析失败";
-"leaneat.retry" = "重试";
-
 // MARK: - Vision Recognition
 "vision.title" = "AI 图像识别";
 "vision.analyzing" = "AI 分析中...";

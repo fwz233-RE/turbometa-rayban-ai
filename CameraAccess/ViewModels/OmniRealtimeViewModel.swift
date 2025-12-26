@@ -26,6 +26,13 @@ class OmniRealtimeViewModel: ObservableObject {
     // Video frame
     private var currentVideoFrame: UIImage?
     private var isImageSendingEnabled = false // 是否已启用图片发送（第一次音频后）
+    private var isActive = true // 视图是否活跃
+    
+    // 自动重连
+    private var reconnectAttempts = 0
+    private let maxReconnectAttempts = 3
+    private var shouldAutoReconnect = true  // 是否应该自动重连
+    private var wasRecording = false  // 重连前是否在录音
 
     init(apiKey: String) {
         self.apiKey = apiKey
@@ -115,9 +122,87 @@ class OmniRealtimeViewModel: ObservableObject {
 
         omniService.onError = { [weak self] error in
             Task { @MainActor in
-                self?.errorMessage = error
-                self?.showError = true
+                guard let self = self, self.isActive else {
+                    print("⚠️ [OmniVM] 忽略错误（视图已关闭）: \(error)")
+                    return
+                }
+                
+                // 检查是否是连接断开错误
+                let isDisconnectError = error.contains("连接已断开") || 
+                                        error.contains("Socket") ||
+                                        error.contains("WebSocket") ||
+                                        error.contains("1007")
+                
+                if isDisconnectError && self.shouldAutoReconnect && self.reconnectAttempts < self.maxReconnectAttempts {
+                    self.reconnectAttempts += 1
+                    print("🔄 [OmniVM] 检测到连接断开，尝试重连... (尝试 \(self.reconnectAttempts)/\(self.maxReconnectAttempts))")
+                    
+                    // 保存当前录音状态
+                    self.wasRecording = self.isRecording
+                    self.isConnected = false
+                    self.isRecording = false
+                    
+                    // 延迟后重连
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
+                        guard let self = self, self.isActive, self.shouldAutoReconnect else { return }
+                        print("🔄 [OmniVM] 执行重连...")
+                        self.reconnect()
+                    }
+                    return
+                }
+                
+                // 其他错误或重连失败，显示给用户
+                if !self.isConnected {
+                    print("⚠️ [OmniVM] 忽略错误（未连接）: \(error)")
+                    return
+                }
+                
+                self.errorMessage = error
+                self.showError = true
             }
+        }
+        
+        // 新增：监听断开事件
+        omniService.onDisconnected = { [weak self] reason in
+            Task { @MainActor in
+                guard let self = self, self.isActive else { return }
+                print("🔌 [OmniVM] 收到断开回调: \(reason)")
+                
+                // 如果是意外断开且应该重连
+                if self.isConnected && self.shouldAutoReconnect && self.reconnectAttempts < self.maxReconnectAttempts {
+                    self.reconnectAttempts += 1
+                    print("🔄 [OmniVM] 意外断开，尝试重连... (尝试 \(self.reconnectAttempts)/\(self.maxReconnectAttempts))")
+                    
+                    self.wasRecording = self.isRecording
+                    self.isConnected = false
+                    self.isRecording = false
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
+                        guard let self = self, self.isActive, self.shouldAutoReconnect else { return }
+                        self.reconnect()
+                    }
+                } else {
+                    self.isConnected = false
+                    self.isRecording = false
+                }
+            }
+        }
+    }
+    
+    // MARK: - Reconnect
+    
+    private func reconnect() {
+        // 重新创建 service 并设置回调
+        omniService = OmniRealtimeService(apiKey: apiKey)
+        setupCallbacks()
+        omniService.connect()
+        
+        // 等待连接成功后恢复录音
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in
+            guard let self = self, self.isConnected, self.wasRecording else { return }
+            print("🔄 [OmniVM] 重连成功，恢复录音")
+            self.startRecording()
+            self.reconnectAttempts = 0  // 重置重连计数
         }
     }
 
@@ -128,6 +213,12 @@ class OmniRealtimeViewModel: ObservableObject {
     }
 
     func disconnect() {
+        // 禁用自动重连
+        shouldAutoReconnect = false
+        
+        // 标记视图不活跃，防止后续错误回调
+        isActive = false
+        
         // Save conversation before disconnecting
         saveConversation()
 

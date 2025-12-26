@@ -22,11 +22,11 @@ struct RecordsView: View {
                             selectedTab = 1
                         }
 
-                        RecordTabButton(title: "LeanEat", isSelected: selectedTab == 2) {
+                        RecordTabButton(title: "直播", isSelected: selectedTab == 2) {
                             selectedTab = 2
                         }
 
-                        RecordTabButton(title: "WordLearn", isSelected: selectedTab == 3) {
+                        RecordTabButton(title: "语音对话", isSelected: selectedTab == 3) {
                             selectedTab = 3
                         }
                     }
@@ -43,10 +43,10 @@ struct RecordsView: View {
                     TranslationRecordsView()
                         .tag(1)
 
-                    LeanEatRecordsView()
+                    LiveStreamRecordsView()
                         .tag(2)
 
-                    WordLearnRecordsView()
+                    VoiceChatRecordsView()
                         .tag(3)
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
@@ -261,24 +261,24 @@ struct TranslationRecordsView: View {
     }
 }
 
-// MARK: - LeanEat Records
+// MARK: - Live Stream Records
 
-struct LeanEatRecordsView: View {
+struct LiveStreamRecordsView: View {
     var body: some View {
         ZStack {
             AppColors.secondaryBackground
                 .ignoresSafeArea()
 
             VStack(spacing: AppSpacing.lg) {
-                Image(systemName: "chart.bar.fill")
+                Image(systemName: "video.fill")
                     .font(.system(size: 64))
-                    .foregroundColor(AppColors.leanEat.opacity(0.6))
+                    .foregroundColor(AppColors.liveStream.opacity(0.6))
 
-                Text("暂无卡路里识别记录")
+                Text("暂无直播记录")
                     .font(AppTypography.title2)
                     .foregroundColor(AppColors.textPrimary)
 
-                Text("功能即将上线")
+                Text("使用直播功能后记录将显示在这里")
                     .font(AppTypography.subheadline)
                     .foregroundColor(AppColors.textSecondary)
             }
@@ -286,27 +286,129 @@ struct LeanEatRecordsView: View {
     }
 }
 
-// MARK: - WordLearn Records
+// MARK: - Voice Chat Records
 
-struct WordLearnRecordsView: View {
+struct VoiceChatRecordsView: View {
+    @StateObject private var viewModel = ConversationListViewModel()
+    @State private var selectedConversation: ConversationRecord?
+    @State private var showDetail = false
+
     var body: some View {
         ZStack {
             AppColors.secondaryBackground
                 .ignoresSafeArea()
 
-            VStack(spacing: AppSpacing.lg) {
-                Image(systemName: "book.closed.fill")
-                    .font(.system(size: 64))
-                    .foregroundColor(AppColors.wordLearn.opacity(0.6))
+            if viewModel.conversations.isEmpty {
+                // Empty state
+                VStack(spacing: AppSpacing.lg) {
+                    Image(systemName: "waveform.circle.fill")
+                        .font(.system(size: 64))
+                        .foregroundColor(AppColors.voiceChat.opacity(0.6))
 
-                Text("暂无单词学习记录")
-                    .font(AppTypography.title2)
-                    .foregroundColor(AppColors.textPrimary)
+                    Text("暂无语音对话记录")
+                        .font(AppTypography.title2)
+                        .foregroundColor(AppColors.textPrimary)
 
-                Text("功能即将上线")
-                    .font(AppTypography.subheadline)
-                    .foregroundColor(AppColors.textSecondary)
+                    Text("使用语音对话功能后记录将显示在这里")
+                        .font(AppTypography.subheadline)
+                        .foregroundColor(AppColors.textSecondary)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, AppSpacing.xl)
+                }
+            } else {
+                // Conversation list
+                ScrollView {
+                    LazyVStack(spacing: AppSpacing.md) {
+                        ForEach(viewModel.conversations) { conversation in
+                            VoiceChatConversationCell(conversation: conversation)
+                                .onTapGesture {
+                                    selectedConversation = conversation
+                                    showDetail = true
+                                }
+                                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                    Button(role: .destructive) {
+                                        viewModel.deleteConversation(conversation.id)
+                                    } label: {
+                                        Label("删除", systemImage: "trash")
+                                    }
+                                }
+                        }
+                    }
+                    .padding(AppSpacing.md)
+                }
+                .refreshable {
+                    viewModel.loadConversations()
+                }
             }
         }
+        .onAppear {
+            viewModel.loadConversations()
+        }
+        .sheet(isPresented: $showDetail) {
+            if let conversation = selectedConversation {
+                ConversationDetailView(conversation: conversation)
+            }
+        }
+    }
+}
+
+// MARK: - Voice Chat Conversation Cell
+
+struct VoiceChatConversationCell: View {
+    let conversation: ConversationRecord
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: AppSpacing.sm) {
+            // Header
+            HStack {
+                Image(systemName: "waveform.circle.fill")
+                    .foregroundColor(AppColors.voiceChat)
+                    .font(AppTypography.headline)
+
+                Text(conversation.title)
+                    .font(AppTypography.headline)
+                    .foregroundColor(AppColors.textPrimary)
+                    .lineLimit(1)
+
+                Spacer()
+
+                Image(systemName: "chevron.right")
+                    .font(AppTypography.caption)
+                    .foregroundColor(AppColors.textTertiary)
+            }
+
+            // Summary
+            if !conversation.summary.isEmpty {
+                Text(conversation.summary)
+                    .font(AppTypography.subheadline)
+                    .foregroundColor(AppColors.textSecondary)
+                    .lineLimit(2)
+            }
+
+            // Footer
+            HStack(spacing: AppSpacing.md) {
+                HStack(spacing: AppSpacing.xs) {
+                    Image(systemName: "clock")
+                        .font(AppTypography.caption)
+                    Text(conversation.formattedDate)
+                        .font(AppTypography.caption)
+                }
+                .foregroundColor(AppColors.textSecondary)
+
+                HStack(spacing: AppSpacing.xs) {
+                    Image(systemName: "bubble.left.and.bubble.right")
+                        .font(AppTypography.caption)
+                    Text("\(conversation.messageCount) 条消息")
+                        .font(AppTypography.caption)
+                }
+                .foregroundColor(AppColors.textSecondary)
+
+                Spacer()
+            }
+        }
+        .padding(AppSpacing.md)
+        .background(AppColors.tertiaryBackground)
+        .cornerRadius(AppCornerRadius.lg)
+        .shadow(color: AppShadow.small(), radius: 4, x: 0, y: 2)
     }
 }

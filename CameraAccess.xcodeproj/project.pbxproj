@@ -22,24 +22,20 @@
 		4BA57ACF2EF8227E002EC214 /* VisionRecognitionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA57ABE2EF8227E002EC214 /* VisionRecognitionView.swift */; };
 		4BA57AD02EF8227E002EC214 /* APIKeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA57A952EF8227E002EC214 /* APIKeyManager.swift */; };
 		4BA57AD12EF8227E002EC214 /* RegistrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA57AB82EF8227E002EC214 /* RegistrationView.swift */; };
-		4BA57AD22EF8227E002EC214 /* LeanEatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA57A8E2EF8227E002EC214 /* LeanEatService.swift */; };
 		4BA57AD32EF8227E002EC214 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA57AB32EF8227E002EC214 /* MainTabView.swift */; };
 		4BA57AD42EF8227E002EC214 /* LiveAIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA57AB12EF8227E002EC214 /* LiveAIView.swift */; };
 		4BA57AD52EF8227E002EC214 /* MainAppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA57AB22EF8227E002EC214 /* MainAppView.swift */; };
 		4BA57AD62EF8227E002EC214 /* DebugMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA57AAD2EF8227E002EC214 /* DebugMenuView.swift */; };
 		4BA57AD72EF8227E002EC214 /* MockDeviceKitViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA57A982EF8227E002EC214 /* MockDeviceKitViewModel.swift */; };
-		4BA57AD82EF8227E002EC214 /* LeanEatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA57A9C2EF8227E002EC214 /* LeanEatViewModel.swift */; };
 		4BA57AD92EF8227E002EC214 /* VisionRecognitionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA57A9F2EF8227E002EC214 /* VisionRecognitionViewModel.swift */; };
 		4BA57ADA2EF8227E002EC214 /* WearablesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA57AA02EF8227E002EC214 /* WearablesViewModel.swift */; };
 		4BA57ADB2EF8227E002EC214 /* StreamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA57ABC2EF8227E002EC214 /* StreamView.swift */; };
-		4BA57ADC2EF8227E002EC214 /* LeanEatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA57AB02EF8227E002EC214 /* LeanEatView.swift */; };
 		4BA57ADD2EF8227E002EC214 /* PhotoPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA57AB62EF8227E002EC214 /* PhotoPreviewView.swift */; };
 		4BA57ADE2EF8227E002EC214 /* StreamSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA57ABB2EF8227E002EC214 /* StreamSessionView.swift */; };
 		4BA57ADF2EF8227E002EC214 /* MockDeviceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA57A992EF8227E002EC214 /* MockDeviceViewModel.swift */; };
 		4BA57AE02EF8227E002EC214 /* ConversationStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA57A8D2EF8227E002EC214 /* ConversationStorage.swift */; };
 		4BA57AE12EF8227E002EC214 /* SimpleLiveStreamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA57ABA2EF8227E002EC214 /* SimpleLiveStreamView.swift */; };
 		4BA57AE22EF8227E002EC214 /* DebugMenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA57A9B2EF8227E002EC214 /* DebugMenuViewModel.swift */; };
-		4BA57AE32EF8227E002EC214 /* FoodNutritionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA57A8B2EF8227E002EC214 /* FoodNutritionModel.swift */; };
 		4BA57AE42EF8227E002EC214 /* OmniRealtimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA57AB52EF8227E002EC214 /* OmniRealtimeView.swift */; };
 		4BA57AE52EF8227E002EC214 /* VisionAPIConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA57A902EF8227E002EC214 /* VisionAPIConfig.swift */; };
 		4BA57AE62EF8227E002EC214 /* TimeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA57A962EF8227E002EC214 /* TimeUtils.swift */; };
@@ -52,6 +48,7 @@
 		4BA57AED2EF8227E002EC214 /* TurboMetaHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA57ABD2EF8227E002EC214 /* TurboMetaHomeView.swift */; };
 		4BA57AEE2EF8227E002EC214 /* OmniRealtimeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA57A8F2EF8227E002EC214 /* OmniRealtimeService.swift */; };
 		4BA57AEF2EF8227E002EC214 /* HomeScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA57AAF2EF8227E002EC214 /* HomeScreenView.swift */; };
+		4BA57B002EF82500002EC214 /* VoiceChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA57AFF2EF82500002EC214 /* VoiceChatView.swift */; };
 		4BA57AF02EF8227E002EC214 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4BA57A882EF8227E002EC214 /* Localizable.strings */; };
 		4BA57AF12EF8227E002EC214 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4BA57AC12EF8227E002EC214 /* Localizable.strings */; };
 		4BA57AF32EF823ED002EC214 /* PermissionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA57AF22EF823ED002EC214 /* PermissionsManager.swift */; };
@@ -90,9 +87,7 @@
 		3A3A3A3A3A3A3A3A3A3A3A3A /* CameraAccess.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CameraAccess.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BA57A872EF8227E002EC214 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Localizable.strings; sourceTree = "<group>"; };
 		4BA57A8A2EF8227E002EC214 /* ConversationRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationRecord.swift; sourceTree = "<group>"; };
-		4BA57A8B2EF8227E002EC214 /* FoodNutritionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodNutritionModel.swift; sourceTree = "<group>"; };
 		4BA57A8D2EF8227E002EC214 /* ConversationStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationStorage.swift; sourceTree = "<group>"; };
-		4BA57A8E2EF8227E002EC214 /* LeanEatService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeanEatService.swift; sourceTree = "<group>"; };
 		4BA57A8F2EF8227E002EC214 /* OmniRealtimeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OmniRealtimeService.swift; sourceTree = "<group>"; };
 		4BA57A902EF8227E002EC214 /* VisionAPIConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisionAPIConfig.swift; sourceTree = "<group>"; };
 		4BA57A912EF8227E002EC214 /* VisionAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisionAPIService.swift; sourceTree = "<group>"; };
@@ -102,7 +97,6 @@
 		4BA57A982EF8227E002EC214 /* MockDeviceKitViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDeviceKitViewModel.swift; sourceTree = "<group>"; };
 		4BA57A992EF8227E002EC214 /* MockDeviceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDeviceViewModel.swift; sourceTree = "<group>"; };
 		4BA57A9B2EF8227E002EC214 /* DebugMenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugMenuViewModel.swift; sourceTree = "<group>"; };
-		4BA57A9C2EF8227E002EC214 /* LeanEatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeanEatViewModel.swift; sourceTree = "<group>"; };
 		4BA57A9D2EF8227E002EC214 /* OmniRealtimeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OmniRealtimeViewModel.swift; sourceTree = "<group>"; };
 		4BA57A9E2EF8227E002EC214 /* StreamSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamSessionViewModel.swift; sourceTree = "<group>"; };
 		4BA57A9F2EF8227E002EC214 /* VisionRecognitionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisionRecognitionViewModel.swift; sourceTree = "<group>"; };
@@ -119,7 +113,6 @@
 		4BA57AAD2EF8227E002EC214 /* DebugMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugMenuView.swift; sourceTree = "<group>"; };
 		4BA57AAE2EF8227E002EC214 /* GalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryView.swift; sourceTree = "<group>"; };
 		4BA57AAF2EF8227E002EC214 /* HomeScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreenView.swift; sourceTree = "<group>"; };
-		4BA57AB02EF8227E002EC214 /* LeanEatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeanEatView.swift; sourceTree = "<group>"; };
 		4BA57AB12EF8227E002EC214 /* LiveAIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveAIView.swift; sourceTree = "<group>"; };
 		4BA57AB22EF8227E002EC214 /* MainAppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainAppView.swift; sourceTree = "<group>"; };
 		4BA57AB32EF8227E002EC214 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
@@ -142,6 +135,7 @@
 		8FD96B792E6F0A9800F56AB1 /* TurboMetaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurboMetaApp.swift; sourceTree = "<group>"; };
 		8FD96B7B2E6F0A9800F56AB1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E699CC952E8150670052C240 /* CameraAccessTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CameraAccessTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4BA57AFF2EF82500002EC214 /* VoiceChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceChatView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -174,7 +168,6 @@
 			isa = PBXGroup;
 			children = (
 				4BA57A8A2EF8227E002EC214 /* ConversationRecord.swift */,
-				4BA57A8B2EF8227E002EC214 /* FoodNutritionModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -183,7 +176,6 @@
 			isa = PBXGroup;
 			children = (
 				4BA57A8D2EF8227E002EC214 /* ConversationStorage.swift */,
-				4BA57A8E2EF8227E002EC214 /* LeanEatService.swift */,
 				4BA57A8F2EF8227E002EC214 /* OmniRealtimeService.swift */,
 				4BA57A902EF8227E002EC214 /* VisionAPIConfig.swift */,
 				4BA57A912EF8227E002EC214 /* VisionAPIService.swift */,
@@ -223,7 +215,6 @@
 			children = (
 				4BA57A9A2EF8227E002EC214 /* MockDeviceKit */,
 				4BA57A9B2EF8227E002EC214 /* DebugMenuViewModel.swift */,
-				4BA57A9C2EF8227E002EC214 /* LeanEatViewModel.swift */,
 				4BA57A9D2EF8227E002EC214 /* OmniRealtimeViewModel.swift */,
 				4BA57A9E2EF8227E002EC214 /* StreamSessionViewModel.swift */,
 				4BA57A9F2EF8227E002EC214 /* VisionRecognitionViewModel.swift */,
@@ -264,7 +255,6 @@
 				4BA57AAD2EF8227E002EC214 /* DebugMenuView.swift */,
 				4BA57AAE2EF8227E002EC214 /* GalleryView.swift */,
 				4BA57AAF2EF8227E002EC214 /* HomeScreenView.swift */,
-				4BA57AB02EF8227E002EC214 /* LeanEatView.swift */,
 				4BA57AB12EF8227E002EC214 /* LiveAIView.swift */,
 				4BA57AB22EF8227E002EC214 /* MainAppView.swift */,
 				4BA57AB32EF8227E002EC214 /* MainTabView.swift */,
@@ -279,6 +269,7 @@
 				4BA57ABC2EF8227E002EC214 /* StreamView.swift */,
 				4BA57ABD2EF8227E002EC214 /* TurboMetaHomeView.swift */,
 				4BA57ABE2EF8227E002EC214 /* VisionRecognitionView.swift */,
+				4BA57AFF2EF82500002EC214 /* VoiceChatView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -462,24 +453,20 @@
 				4BA57ACF2EF8227E002EC214 /* VisionRecognitionView.swift in Sources */,
 				4BA57AD02EF8227E002EC214 /* APIKeyManager.swift in Sources */,
 				4BA57AD12EF8227E002EC214 /* RegistrationView.swift in Sources */,
-				4BA57AD22EF8227E002EC214 /* LeanEatService.swift in Sources */,
 				4BA57AD32EF8227E002EC214 /* MainTabView.swift in Sources */,
 				4BA57AD42EF8227E002EC214 /* LiveAIView.swift in Sources */,
 				4BA57AD52EF8227E002EC214 /* MainAppView.swift in Sources */,
 				4BA57AD62EF8227E002EC214 /* DebugMenuView.swift in Sources */,
 				4BA57AD72EF8227E002EC214 /* MockDeviceKitViewModel.swift in Sources */,
-				4BA57AD82EF8227E002EC214 /* LeanEatViewModel.swift in Sources */,
 				4BA57AD92EF8227E002EC214 /* VisionRecognitionViewModel.swift in Sources */,
 				4BA57ADA2EF8227E002EC214 /* WearablesViewModel.swift in Sources */,
 				4BA57ADB2EF8227E002EC214 /* StreamView.swift in Sources */,
-				4BA57ADC2EF8227E002EC214 /* LeanEatView.swift in Sources */,
 				4BA57ADD2EF8227E002EC214 /* PhotoPreviewView.swift in Sources */,
 				4BA57ADE2EF8227E002EC214 /* StreamSessionView.swift in Sources */,
 				4BA57ADF2EF8227E002EC214 /* MockDeviceViewModel.swift in Sources */,
 				4BA57AE02EF8227E002EC214 /* ConversationStorage.swift in Sources */,
 				4BA57AE12EF8227E002EC214 /* SimpleLiveStreamView.swift in Sources */,
 				4BA57AE22EF8227E002EC214 /* DebugMenuViewModel.swift in Sources */,
-				4BA57AE32EF8227E002EC214 /* FoodNutritionModel.swift in Sources */,
 				4BA57AE42EF8227E002EC214 /* OmniRealtimeView.swift in Sources */,
 				4BA57AE52EF8227E002EC214 /* VisionAPIConfig.swift in Sources */,
 				4BA57AE62EF8227E002EC214 /* TimeUtils.swift in Sources */,
@@ -493,6 +480,7 @@
 				4BA57AED2EF8227E002EC214 /* TurboMetaHomeView.swift in Sources */,
 				4BA57AEE2EF8227E002EC214 /* OmniRealtimeService.swift in Sources */,
 				4BA57AEF2EF8227E002EC214 /* HomeScreenView.swift in Sources */,
+				4BA57B002EF82500002EC214 /* VoiceChatView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -540,11 +528,11 @@
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = CameraAccess/TurboMeta.entitlements;
-				CODE_SIGN_IDENTITY = "";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 8A9VJ623AR;
 				ENABLE_PREVIEWS = YES;
 				FRAMEWORK_SEARCH_PATHS = "";
 				INFOPLIST_FILE = CameraAccess/Info.plist;
@@ -554,7 +542,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.meta.wearables.external.CameraAccess;
+				PRODUCT_BUNDLE_IDENTIFIER = com.fwz233.turbometa.rayban;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -569,11 +557,11 @@
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = CameraAccess/TurboMeta.entitlements;
-				CODE_SIGN_IDENTITY = "";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 8A9VJ623AR;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = CameraAccess/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -582,7 +570,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.meta.wearables.external.CameraAccess;
+				PRODUCT_BUNDLE_IDENTIFIER = com.fwz233.turbometa.rayban;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;

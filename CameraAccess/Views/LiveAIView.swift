@@ -10,6 +10,9 @@ struct LiveAIView: View {
     @ObservedObject var streamViewModel: StreamSessionViewModel
     @Environment(\.dismiss) private var dismiss
     @State private var showConversation = true // 控制对话内容显示/隐藏
+    @State private var hasDisconnected = false // 防止重复断开
+    @State private var hasStartedSession = false // 防止重复启动
+    @State private var frameUpdateTimer: Timer? // 帧更新定时器
 
     init(streamViewModel: StreamSessionViewModel, apiKey: String) {
         self.streamViewModel = streamViewModel
@@ -90,39 +93,16 @@ struct LiveAIView: View {
             }
         }
         .onAppear {
-            // 只有设备连接时才启动功能
-            guard streamViewModel.hasActiveDevice else {
-                print("⚠️ LiveAIView: 未连接RayBan Meta眼镜，跳过启动")
-                return
-            }
-
-            // 启动视频流
-            Task {
-                print("🎥 LiveAIView: 启动视频流")
-                await streamViewModel.handleStartStreaming()
-            }
-
-            // 自动连接并开始录音
-            viewModel.connect()
-
-            // 更新视频帧
-            Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
-                if let frame = streamViewModel.currentVideoFrame {
-                    viewModel.updateVideoFrame(frame)
-                }
-            }
-
-            // 延迟启动录音，等待连接完成
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                if viewModel.isConnected {
-                    viewModel.startRecording()
-                }
-            }
+            startSessionIfNeeded()
         }
         .onDisappear {
+            // 清理定时器
+            frameUpdateTimer?.invalidate()
+            frameUpdateTimer = nil
+            
             // 停止 AI 对话和视频流
             print("🎥 LiveAIView: 停止 AI 对话和视频流")
-            viewModel.disconnect()
+            disconnectIfNeeded()
             Task {
                 if streamViewModel.streamingStatus != .stopped {
                     await streamViewModel.stopSession()
@@ -136,6 +116,66 @@ struct LiveAIView: View {
         } message: {
             if let error = viewModel.errorMessage {
                 Text(error)
+            }
+        }
+    }
+    
+    // 安全断开连接
+    private func disconnectIfNeeded() {
+        guard !hasDisconnected else { return }
+        hasDisconnected = true
+        viewModel.disconnect()
+    }
+    
+    // 安全启动会话
+    private func startSessionIfNeeded() {
+        // 防止重复启动
+        guard !hasStartedSession else {
+            print("⚠️ LiveAIView: 已启动，跳过重复启动")
+            return
+        }
+        hasStartedSession = true
+        
+        // 只有设备连接时才启动功能
+        guard streamViewModel.hasActiveDevice else {
+            print("⚠️ LiveAIView: 未连接RayBan Meta眼镜，跳过启动")
+            hasStartedSession = false  // 允许重新尝试
+            return
+        }
+        
+        // 延迟启动，等待设备状态稳定
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
+            // 再次检查设备状态
+            guard streamViewModel.hasActiveDevice else {
+                print("⚠️ LiveAIView: 设备已断开，取消启动")
+                hasStartedSession = false
+                return
+            }
+            
+            // 启动视频流
+            Task {
+                print("🎥 LiveAIView: 启动视频流")
+                await streamViewModel.handleStartStreaming()
+            }
+            
+            // 自动连接 AI 服务
+            viewModel.connect()
+            
+            // 更新视频帧（保存引用以便清理）
+            frameUpdateTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak viewModel, weak streamViewModel] timer in
+                guard let viewModel = viewModel, let streamViewModel = streamViewModel else {
+                    timer.invalidate()
+                    return
+                }
+                if let frame = streamViewModel.currentVideoFrame {
+                    viewModel.updateVideoFrame(frame)
+                }
+            }
+            
+            // 延迟启动录音，等待连接完成
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak viewModel] in
+                guard let viewModel = viewModel, viewModel.isConnected else { return }
+                viewModel.startRecording()
             }
         }
     }
@@ -216,7 +256,7 @@ struct LiveAIView: View {
 
             // Stop button (only button)
             Button {
-                viewModel.disconnect()
+                disconnectIfNeeded()
                 dismiss()
             } label: {
                 HStack(spacing: AppSpacing.sm) {
