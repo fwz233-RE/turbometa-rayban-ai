@@ -49,6 +49,7 @@
 		4BA57AEE2EF8227E002EC214 /* OmniRealtimeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA57A8F2EF8227E002EC214 /* OmniRealtimeService.swift */; };
 		4BA57AEF2EF8227E002EC214 /* HomeScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA57AAF2EF8227E002EC214 /* HomeScreenView.swift */; };
 		4BA57B002EF82500002EC214 /* VoiceChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA57AFF2EF82500002EC214 /* VoiceChatView.swift */; };
+		4BA57B012EF9000000000001 /* APISecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA57B022EF9000000000002 /* APISecrets.swift */; };
 		4BA57AF02EF8227E002EC214 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4BA57A882EF8227E002EC214 /* Localizable.strings */; };
 		4BA57AF12EF8227E002EC214 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4BA57AC12EF8227E002EC214 /* Localizable.strings */; };
 		4BA57AF32EF823ED002EC214 /* PermissionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA57AF22EF823ED002EC214 /* PermissionsManager.swift */; };
@@ -136,6 +137,7 @@
 		8FD96B7B2E6F0A9800F56AB1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E699CC952E8150670052C240 /* CameraAccessTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CameraAccessTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BA57AFF2EF82500002EC214 /* VoiceChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceChatView.swift; sourceTree = "<group>"; };
+		4BA57B022EF9000000000002 /* APISecrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APISecrets.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -311,6 +313,7 @@
 		8FD96B7D2E6F0A9800F56AB1 /* CameraAccess */ = {
 			isa = PBXGroup;
 			children = (
+				4BA57B032EF9000000000003 /* Config */,
 				4BA57A892EF8227E002EC214 /* en.lproj */,
 				4BA57A8C2EF8227E002EC214 /* Models */,
 				4BA57A922EF8227E002EC214 /* Services */,
@@ -325,6 +328,14 @@
 				8FD96B7B2E6F0A9800F56AB1 /* Info.plist */,
 			);
 			path = CameraAccess;
+			sourceTree = "<group>";
+		};
+		4BA57B032EF9000000000003 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				4BA57B022EF9000000000002 /* APISecrets.swift */,
+			);
+			path = Config;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -481,6 +492,7 @@
 				4BA57AEE2EF8227E002EC214 /* OmniRealtimeService.swift in Sources */,
 				4BA57AEF2EF8227E002EC214 /* HomeScreenView.swift in Sources */,
 				4BA57B002EF82500002EC214 /* VoiceChatView.swift in Sources */,
+				4BA57B012EF9000000000001 /* APISecrets.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

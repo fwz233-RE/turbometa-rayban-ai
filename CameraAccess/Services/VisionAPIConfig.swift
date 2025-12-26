@@ -6,10 +6,15 @@
 import Foundation
 
 struct VisionAPIConfig {
-    // API Key is now securely stored in Keychain
-    // Get your API key from: https://help.aliyun.com/zh/model-studio/get-api-key
+    // API Key is now embedded and obfuscated
+    // Protected against jailbreak extraction
     static var apiKey: String {
-        return APIKeyManager.shared.getAPIKey() ?? ""
+        // Basic protection: return empty if jailbroken
+        if APISecrets.isJailbroken || APISecrets.isDebuggerAttached {
+            print("⚠️ Security check failed")
+            return ""
+        }
+        return APISecrets.getAPIKey()
     }
 
     // Base URL for Alibaba Cloud Dashscope API
@@ -20,3 +25,4 @@ struct VisionAPIConfig {
     // Model name
     static let model = "qwen3-vl-plus"
 }
+

@@ -105,16 +105,14 @@ struct StreamView: View {
     .sheet(isPresented: $viewModel.showVisionRecognition) {
       if let photo = viewModel.capturedPhoto {
         VisionRecognitionView(
-          photo: photo,
-          apiKey: VisionAPIConfig.apiKey
+          photo: photo
         )
       }
     }
     // Show Omni Realtime Chat view
     .fullScreenCover(isPresented: $viewModel.showOmniRealtime) {
       OmniRealtimeView(
-        streamViewModel: viewModel,
-        apiKey: VisionAPIConfig.apiKey
+        streamViewModel: viewModel
       )
     }
   }

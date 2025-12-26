@@ -8,23 +8,14 @@ import MWDATCore
 
 struct SettingsView: View {
     @ObservedObject var streamViewModel: StreamSessionViewModel
-    let apiKey: String
 
-    @State private var showAPIKeySettings = false
     @State private var showModelSettings = false
     @State private var showLanguageSettings = false
     @State private var selectedModel = "qwen3-omni-flash-realtime"
     @State private var selectedLanguage = "zh-CN" // 默认中文
-    @State private var hasAPIKey = false // 改为 State 变量
 
-    init(streamViewModel: StreamSessionViewModel, apiKey: String) {
+    init(streamViewModel: StreamSessionViewModel) {
         self.streamViewModel = streamViewModel
-        self.apiKey = apiKey
-    }
-
-    // 刷新 API Key 状态
-    private func refreshAPIKeyStatus() {
-        hasAPIKey = APIKeyManager.shared.hasAPIKey()
     }
 
     var body: some View {
@@ -112,23 +103,6 @@ struct SettingsView: View {
                         }
                     }
 
-                    Button {
-                        showAPIKeySettings = true
-                    } label: {
-                        HStack {
-                            Image(systemName: "key.fill")
-                                .foregroundColor(AppColors.voiceChat)
-                            Text("API Key 管理")
-                                .foregroundColor(AppColors.textPrimary)
-                            Spacer()
-                            Text(hasAPIKey ? "已配置" : "未配置")
-                                .font(AppTypography.caption)
-                                .foregroundColor(hasAPIKey ? .green : .red)
-                            Image(systemName: "chevron.right")
-                                .font(AppTypography.caption)
-                                .foregroundColor(AppColors.textTertiary)
-                        }
-                    }
                 } header: {
                     Text("AI 设置")
                 }
@@ -142,24 +116,11 @@ struct SettingsView: View {
                 }
             }
             .navigationTitle("我的")
-            .sheet(isPresented: $showAPIKeySettings) {
-                APIKeySettingsView()
-            }
-            .onChange(of: showAPIKeySettings) { isShowing in
-                // 当 API Key 设置界面关闭时，刷新状态
-                if !isShowing {
-                    refreshAPIKeyStatus()
-                }
-            }
             .sheet(isPresented: $showModelSettings) {
                 ModelSettingsView(selectedModel: $selectedModel)
             }
             .sheet(isPresented: $showLanguageSettings) {
                 LanguageSettingsView(selectedLanguage: $selectedLanguage)
-            }
-            .onAppear {
-                // 视图出现时刷新 API Key 状态
-                refreshAPIKeyStatus()
             }
         }
     }
@@ -196,102 +157,6 @@ struct InfoRow: View {
     }
 }
 
-// MARK: - API Key Settings
-
-struct APIKeySettingsView: View {
-    @Environment(\.dismiss) private var dismiss
-    @State private var apiKey: String = ""
-    @State private var showSaveSuccess = false
-    @State private var showError = false
-    @State private var errorMessage = ""
-
-    var body: some View {
-        NavigationView {
-            Form {
-                Section {
-                    SecureField("请输入 API Key", text: $apiKey)
-                        .textInputAutocapitalization(.never)
-                        .autocorrectionDisabled()
-                } header: {
-                    Text("阿里云 Dashscope API Key")
-                } footer: {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("请前往阿里云控制台获取您的 API Key")
-                        Link("获取 API Key", destination: URL(string: "https://help.aliyun.com/zh/model-studio/get-api-key")!)
-                            .font(.caption)
-                    }
-                }
-
-                Section {
-                    Button("保存") {
-                        saveAPIKey()
-                    }
-                    .frame(maxWidth: .infinity)
-                    .disabled(apiKey.isEmpty)
-
-                    if APIKeyManager.shared.hasAPIKey() {
-                        Button("删除 API Key", role: .destructive) {
-                            deleteAPIKey()
-                        }
-                        .frame(maxWidth: .infinity)
-                    }
-                }
-            }
-            .navigationTitle("API Key 管理")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("完成") {
-                        dismiss()
-                    }
-                }
-            }
-            .alert("保存成功", isPresented: $showSaveSuccess) {
-                Button("确定") {
-                    dismiss()
-                }
-            } message: {
-                Text("API Key 已安全保存")
-            }
-            .alert("错误", isPresented: $showError) {
-                Button("确定") {}
-            } message: {
-                Text(errorMessage)
-            }
-            .onAppear {
-                // Load existing key if available
-                if let existingKey = APIKeyManager.shared.getAPIKey() {
-                    apiKey = existingKey
-                }
-            }
-        }
-    }
-
-    private func saveAPIKey() {
-        guard !apiKey.isEmpty else {
-            errorMessage = "API Key 不能为空"
-            showError = true
-            return
-        }
-
-        if APIKeyManager.shared.saveAPIKey(apiKey) {
-            showSaveSuccess = true
-        } else {
-            errorMessage = "保存失败，请重试"
-            showError = true
-        }
-    }
-
-    private func deleteAPIKey() {
-        if APIKeyManager.shared.deleteAPIKey() {
-            apiKey = ""
-            dismiss()
-        } else {
-            errorMessage = "删除失败，请重试"
-            showError = true
-        }
-    }
-}
 
 // MARK: - Model Settings
 

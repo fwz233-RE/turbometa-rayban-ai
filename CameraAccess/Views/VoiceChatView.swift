@@ -11,8 +11,8 @@ struct VoiceChatView: View {
     @State private var showConversation = true
     @State private var hasDisconnected = false  // 防止重复断开
 
-    init(apiKey: String) {
-        self._viewModel = StateObject(wrappedValue: OmniRealtimeViewModel(apiKey: apiKey))
+    init() {
+        self._viewModel = StateObject(wrappedValue: OmniRealtimeViewModel(apiKey: VisionAPIConfig.apiKey))
     }
 
     var body: some View {

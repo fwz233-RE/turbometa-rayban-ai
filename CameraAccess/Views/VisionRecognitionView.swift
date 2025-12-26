@@ -11,9 +11,9 @@ struct VisionRecognitionView: View {
 
     let photo: UIImage
 
-    init(photo: UIImage, apiKey: String) {
+    init(photo: UIImage) {
         self.photo = photo
-        self._viewModel = StateObject(wrappedValue: VisionRecognitionViewModel(photo: photo, apiKey: apiKey))
+        self._viewModel = StateObject(wrappedValue: VisionRecognitionViewModel(photo: photo, apiKey: VisionAPIConfig.apiKey))
     }
 
     var body: some View {
@@ -214,7 +214,6 @@ struct VisionRecognitionView: View {
 
 #Preview {
     VisionRecognitionView(
-        photo: UIImage(systemName: "photo")!,
-        apiKey: "sk-demo"
+        photo: UIImage(systemName: "photo")!
     )
 }

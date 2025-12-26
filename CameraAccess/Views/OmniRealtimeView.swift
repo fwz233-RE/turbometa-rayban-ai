@@ -10,9 +10,9 @@ struct OmniRealtimeView: View {
     @ObservedObject var streamViewModel: StreamSessionViewModel
     @Environment(\.dismiss) private var dismiss
 
-    init(streamViewModel: StreamSessionViewModel, apiKey: String) {
+    init(streamViewModel: StreamSessionViewModel) {
         self.streamViewModel = streamViewModel
-        self._viewModel = StateObject(wrappedValue: OmniRealtimeViewModel(apiKey: apiKey))
+        self._viewModel = StateObject(wrappedValue: OmniRealtimeViewModel(apiKey: VisionAPIConfig.apiKey))
     }
 
     var body: some View {

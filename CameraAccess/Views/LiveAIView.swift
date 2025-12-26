@@ -14,9 +14,9 @@ struct LiveAIView: View {
     @State private var hasStartedSession = false // 防止重复启动
     @State private var frameUpdateTimer: Timer? // 帧更新定时器
 
-    init(streamViewModel: StreamSessionViewModel, apiKey: String) {
+    init(streamViewModel: StreamSessionViewModel) {
         self.streamViewModel = streamViewModel
-        self._viewModel = StateObject(wrappedValue: OmniRealtimeViewModel(apiKey: apiKey))
+        self._viewModel = StateObject(wrappedValue: OmniRealtimeViewModel(apiKey: VisionAPIConfig.apiKey))
     }
 
     var body: some View {

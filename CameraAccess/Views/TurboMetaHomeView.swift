@@ -8,7 +8,6 @@ import SwiftUI
 struct TurboMetaHomeView: View {
     @ObservedObject var streamViewModel: StreamSessionViewModel
     @ObservedObject var wearablesViewModel: WearablesViewModel
-    let apiKey: String
 
     @State private var showLiveAI = false
     @State private var showLiveStream = false
@@ -94,13 +93,13 @@ struct TurboMetaHomeView: View {
             }
             .navigationBarHidden(true)
             .fullScreenCover(isPresented: $showLiveAI) {
-                LiveAIView(streamViewModel: streamViewModel, apiKey: apiKey)
+                LiveAIView(streamViewModel: streamViewModel)
             }
             .fullScreenCover(isPresented: $showLiveStream) {
                 SimpleLiveStreamView(streamViewModel: streamViewModel)
             }
             .fullScreenCover(isPresented: $showVoiceChat) {
-                VoiceChatView(apiKey: apiKey)
+                VoiceChatView()
             }
         }
     }

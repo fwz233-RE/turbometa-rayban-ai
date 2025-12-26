@@ -31,3 +31,6 @@ Carthage/Build/
 
 # macOS
 .DS_Store
+
+# Secrets - NEVER commit API keys
+CameraAccess/Config/APISecrets.swift
